@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow rounded-4">
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" class="card-img-top rounded-top-4" alt="{{ book.title }}" style="height: 400px; width: 100%; object-fit: contain; background-color: #f8f9fa;">
+                {% else %}
+                    <img src="https://via.placeholder.com/400x400.png?text=Kein+Bild" class="card-img-top rounded-top-4" alt="Kein Bild">
+                {% endif %}
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-3">{{ book.title }}</h3>
+                    <ul class="list-unstyled text-muted">
+                        <li><strong>Autor:</strong> {{ book.author }}</li>
+                        <li><strong>ISBN:</strong> {{ book.isbn }}</li>
+                        <li><strong>Erscheinungsjahr:</strong> {{ book.published_year }}</li>
+                        <li><strong>Verfügbare Exemplare:</strong> {{ book.copies_available }}</li>
+                    </ul>
+                    {% if book.copies_available > 0 %}
+                    <form action="{% url 'borrow_book' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-success">📚 Ausleihen</button>
+                    </form>
+                    {% else %}
+                    <p class="text-danger">Nicht verfügbar</p>
+                    {% endif %}
+                    <div class="mt-4 text-center">
+                        <a href="{% url 'startseite' %}" class="btn btn-outline-secondary">⬅ Zurück zur Startseite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

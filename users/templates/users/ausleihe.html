@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Meine ausgeliehenen Bücher</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Buch</th>
+            <th>Ausgeliehen am</th>
+            <th>Fällig am</th>
+            <th>Status</th>
+            <th>Aktion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in borrowed_books %}
+        <tr>
+            <td>{{ item.book.title }}</td>
+            <td>{{ item.borrowed_at }}</td>
+            <td>{{ item.due_date }}</td>
+            <td>
+                {% if item.returned_at %}
+                    Zurückgegeben
+                {% elif item.is_overdue %}
+                    <span class="text-danger">Überfällig – {{ item.late_fee|floatformat:2 }} €</span>
+                {% else %}
+                    Ausgeliehen
+                {% endif %}
+            </td>
+            <td>
+                {% if not item.returned_at %}
+                <a href="{% url 'return_book' item.id %}" class="btn btn-sm btn-warning">Zurückgeben</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

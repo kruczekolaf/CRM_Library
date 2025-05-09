@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Ausleihe-Hinweis-Karte -->
+<div class="row mt-5">
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+            <img src="/media/img/ausleihe.jpg" class="card-img-top rounded-top-4" alt="Ausleihe starten" style="height: 300px; object-fit: contain; background-color: #f8f9fa;">
+            <div class="card-body text-center">
+                <h5 class="card-title">Ausgeliehene Bücher</h5>
+                <p class="card-text text-muted">Hier kannst du dir deine ausgeliehenen Bücher einsehen.</p>
+                <a href="{% url 'ausleihe' %}" class="btn btn-outline-primary btn-sm w-100 mt-2">Bücher einsehen</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

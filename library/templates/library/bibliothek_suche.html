@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h3 class="mb-4">🔍 Suchergebnisse für: "<em>{{ query }}</em>"</h3>
+    {% if results %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for book in results %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" class="card-img-top rounded-top-4" style="height: 300px; object-fit: contain;" alt="Buchcover">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300x400.png?text=Kein+Bild" class="card-img-top rounded-top-4" alt="Kein Bild verfügbar">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ book.title }}</h5>
+                        <p class="card-text text-muted mb-2">
+                            <strong>Autor:</strong> {{ book.author }}<br>
+                            <strong>ISBN:</strong> {{ book.isbn }}
+                        </p>
+                        <a href="{% url 'buch_detail' book.pk %}" class="btn btn-outline-primary w-100">📖 Details ansehen</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Keine Bücher gefunden.</p>
+    {% endif %}
+
+    <div class="text-center mt-5">
+        <a href="{% url 'startseite' %}" class="btn btn-secondary">⬅ Zurück zur Startseite</a>
+    </div>
+</div>
+{% endblock %}

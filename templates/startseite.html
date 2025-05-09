@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% load library_tags %}
+<div class="container mt-4">
+    <!-- Hero-Section -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+            <div class="card bg-light shadow-sm border-0 rounded-4">
+                <div class="card-body py-5 px-md-5">
+                    <div class="text-center mb-4">
+                        <h1 class="display-4 fw-bold">Willkommen in der CRM-Bibliothek</h1>
+                        <p class="lead">Entdecken Sie unsere umfangreiche Büchersammlung und finden Sie Ihr nächstes Lieblingsbuch!</p>
+                    </div>
+                    
+                    <form method="get" action="{% url 'bibliothek_suche' %}" class="input-group mb-4 shadow-sm">
+                        <input type="text" name="q" class="form-control form-control-lg" placeholder="Nach Titel, Autor oder ISBN suchen..." aria-label="Suche">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class="bi bi-search me-1"></i> Suchen
+                        </button>
+                    </form>
+                    
+                    {% if not user.is_authenticated %}
+                    <div class="text-center mt-4">
+                        <p class="mb-3">Noch kein Konto?</p>
+                        <a href="{% url 'register' %}" class="btn btn-outline-success me-2">
+                            <i class="bi bi-person-plus me-1"></i> Jetzt registrieren
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Genres/Kategorien Schnellzugriff -->
+    <h2 class="mb-4">Entdecken Sie nach Kategorie</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
+        {% for genre in popular_genres %}
+        <div class="col">
+            <a href="{% url 'bibliothek_suche' %}?q={{ genre }}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm hover-shadow border-0 rounded-4 text-center">
+                    <div class="card-body py-4">
+                        <i class="bi bi-book text-primary" style="font-size: 2rem;"></i>
+                        <h5 class="card-title mt-3">{{ genre }}</h5>
+                        <p class="text-muted small">{{ genre_counts|get_item:genre }} Bücher</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-4">
+            <p class="text-muted">Noch keine Kategorien verfügbar.</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Neueste Bücher -->
+    <h2 class="mb-4">Neueste Bücher</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for book in newest_books %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 rounded-4">
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" class="card-img-top rounded-top-4" alt="{{ book.title }}" style="height: 400px; width: 100%; object-fit: contain; background-color: #f8f9fa;">
+                {% else %}
+                    <img src="https://via.placeholder.com/400x400.png?text=Kein+Bild" class="card-img-top rounded-top-4" alt="Kein Bild">
+                <div class="bg-light rounded-top-4 text-center p-4" style="height: 200px;">
+                    <i class="bi bi-book" style="font-size: 5rem; color: #ccc;"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text text-muted mb-1">{{ book.author }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">{{ book.genre }}</small>
+                    </p>
+                    <a href="{% url 'buch_detail' book.pk %}" class="btn btn-outline-primary btn-sm w-100 mt-2">Details ansehen</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-4">
+            <p class="text-muted">Noch keine Bücher verfügbar.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

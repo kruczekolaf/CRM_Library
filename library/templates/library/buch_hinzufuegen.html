@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">📚 Buch hinzufügen</h4>
+        </div>
+        <div class="card-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="row g-3">
+                {% csrf_token %}
+
+                <div class="col-md-6">
+                    <label for="id_title" class="form-label">Titel</label>
+                    {{ form.title|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_author" class="form-label">Autor</label>
+                    {{ form.author|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_isbn" class="form-label">ISBN</label>
+                    {{ form.isbn|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_genre" class="form-label">Genre</label>
+                    {{ form.genre|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_published_year" class="form-label">Erscheinungsjahr</label>
+                    {{ form.published_year|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_copies_available" class="form-label">Verfügbare Exemplare</label>
+                    {{ form.copies_available|add_class:"form-control" }}
+                </div>
+                <div class="col-md-12">
+                    <label for="id_image" class="form-label">📷 Buchcover (optional)</label>
+                    {{ form.image|add_class:"form-control" }}
+                </div>
+
+                <div class="col-12 d-flex justify-content-end mt-3">
+                    <button type="submit" name="add_another" class="btn btn-success me-2">💾 Speichern & Neues Buch</button>
+                    <button type="submit" name="return_dashboard" class="btn btn-primary me-2">💾 Speichern & Zurück</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">❌ Abbrechen</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
