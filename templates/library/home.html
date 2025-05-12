@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Startseite | CRM Library{% endblock %}
+{% block content %}
+
+<div class="row mb-4">
+  <div class="col-md-8 mx-auto">
+    <form method="get" class="d-flex">
+      <input type="text" name="q" class="form-control me-2" placeholder="Buch suchen..." value="{{ search_query }}">
+      <button type="submit" class="btn btn-primary">Suchen</button>
+    </form>
+  </div>
+</div>
+
+<h4 class="mb-3">Top Kategorien</h4>
+<div class="row mb-4">
+  {% for cat in top_categories %}
+    <div class="col-md-2 col-6 mb-3">
+      <div class="card text-center">
+        <div class="card-body p-2">
+          <h6 class="card-title mb-1">{{ cat.genre }}</h6>
+          <span class="badge bg-info">{{ cat.num_loans }} Ausleihen</span>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>Keine Kategorien vorhanden.</p>
+  {% endfor %}
+</div>
+
+{% if search_query %}
+  <h4 class="mb-3">Suchergebnisse für "{{ search_query }}"</h4>
+  <div class="row">
+    {% if books %}
+      {% for book in books %}
+        <div class="col-md-3 col-6 mb-4">
+          <div class="card h-100">
+            {% if book.image %}
+              <img src="{{ book.image.url }}" class="card-img-top" style="height: 300px; object-fit: contain;">
+            {% else %}
+              <img src="https://placehold.co/200x300?text=Kein+Bild" class="card-img-top" style="height: 300px; object-fit: contain;">
+            {% endif %}
+            <div class="card-body">
+              <h6 class="card-title">{{ book.title }}</h6>
+              <p class="card-text text-muted mb-2">von {{ book.author }}</p>
+              <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-primary btn-sm">Details</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>Keine Bücher gefunden.</p>
+    {% endif %}
+  </div>
+{% else %}
+  <h4 class="mb-3">Neueste Bücher</h4>
+  <div class="row">
+    {% for book in newest_books %}
+      <div class="col-md-3 col-6 mb-4">
+        <div class="card h-100">
+          {% if book.image %}
+            <img src="{{ book.image.url }}" class="card-img-top" style="height: 300px; object-fit: contain;">
+          {% else %}
+            <img src="https://placehold.co/200x300?text=Kein+Bild" class="card-img-top" style="height: 300px; object-fit: contain;">
+          {% endif %}
+          <div class="card-body">
+            <h6 class="card-title">{{ book.title }}</h6>
+            <p class="card-text text-muted mb-2">von {{ book.author }}</p>
+            <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-primary btn-sm">Details</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>Keine Bücher gefunden.</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% endblock %}

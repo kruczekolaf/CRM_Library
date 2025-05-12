@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Rechnung bezahlen | CRM Library{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h3>Rechnung bezahlen</h3>
+      <p>Buch: <strong>{{ invoice.book.title }}</strong></p>
+      <p>Betrag: <strong>{{ invoice.amount }} €</strong></p>
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Als bezahlt markieren</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Abbrechen</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

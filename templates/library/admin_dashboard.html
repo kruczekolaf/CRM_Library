@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard | CRM Library{% endblock %}
+{% block content %}
+<h2 class="mb-4">Admin Dashboard</h2>
+<div class="row mb-4">
+  <div class="col-md-4 mb-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Datenbank (Bücher)</h5>
+        <a href="{% url 'book_database' %}" class="btn btn-sm btn-success mb-2">Zur Datenbank</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Ausgeliehene Bücher</h5>
+        <a href="{% url 'all_loans' %}" class="btn btn-sm btn-success mb-2">Zu den ausgeliehnen Büchern</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Offene Rechnungen</h5>
+        {% if open_invoices %}
+          <ul class="list-group list-group-flush">
+            {% for invoice in open_invoices %}
+              <li class="list-group-item">
+                {{ invoice.user.username }}<br>
+                Buch: {{ invoice.book.title }}<br>
+                Betrag: {{ invoice.amount }} €<br>
+                Überfällig seit: {{ invoice.due_date|date:"d.m.Y" }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Keine offenen Rechnungen.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Login | CRM Library{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h3 class="mb-4 text-center">Login</h3>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Benutzername</label>
+          <input type="text" name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Passwort</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+      <div class="mt-3 text-center">
+        <small>Noch kein Konto? <a href="{% url 'register' %}">Jetzt registrieren</a></small>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

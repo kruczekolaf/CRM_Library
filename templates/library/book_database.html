@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Datenbank | Bücher{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Alle Bücher</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ISBN</th>
+      <th>Titel</th>
+      <th>Autor</th>
+      <th>Genre</th>   
+      <th>Erscheinungsjahr</th>
+      <th>Exemplare Verfügbar</th>
+      <th>Sichtbarkeit</th>
+      <th>Aktionen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+    <tr>
+      <td>{{ book.isbn }}</td>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.published_year }}</td>
+      <td>{{ book.copies_available }}</td>
+      <td>{{ book.visible }}</td>
+      <td class="text-end">
+        <a href="{% url 'edit_book' book.id %}" class="btn btn-sm btn-warning">Bearbeiten</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

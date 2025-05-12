@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Alle Ausleihen{% endblock %}
+{% block content %}
+<h2 class="mb-4">Alle ausgeliehenen Bücher</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Buch</th>
+      <th>Benutzer</th>
+      <th>Ausgeliehen am</th>
+      <th>Fällig am</th>
+      <th>Zurückgegeben</th>
+      <th>Überfällig (Tage)</th>
+      <th>Gebühr (€)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for loan in loans %}
+      <tr>
+        <td>
+          <strong>{{ loan.book.title }}</strong><br>
+          ISBN: {{ loan.book.isbn }}<br>
+          Autor: {{ loan.book.author }}<br>
+          Genre: {{ loan.book.genre }}<br>
+          Erscheinungsjahr: {{ loan.book.published_year }}
+        </td>
+        <td>{{ loan.user.username }}</td>
+        <td>{{ loan.borrowed_at|date:"d.m.Y H:i" }}</td>
+        <td>{{ loan.due_date|date:"d.m.Y H:i" }}</td>
+        <td>
+          {% if loan.is_returned %}
+            <span class="text-success">Ja ({{ loan.returned_at|date:"d.m.Y H:i" }})</span>
+          {% else %}
+            <span class="text-danger">Nein</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if loan.days_overdue > 0 %}
+            <span class="text-danger">{{ loan.days_overdue }}</span>
+          {% else %}
+            0
+          {% endif %}
+        </td>
+        <td>
+          {% if loan.fee > 0 %}
+            <span class="text-danger">{{ loan.fee|floatformat:2 }} €</span>
+          {% else %}
+            0,00 €
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="7">Keine Ausleihen gefunden.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

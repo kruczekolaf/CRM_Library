@@ -1,22 +1,20 @@
 from django.urls import path
 from . import views
-from library.views import startseite
-from library.views import bibliothek_suche
-from .views import buch_detail
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('startseite/', views.startseite, name='startseite'),
-    path('register/', views.register, name='register'),
-    path('buch-hinzufuegen/', views.buch_hinzufuegen, name='buch_hinzufuegen'),
-    path('bibliothek/', views.bibliothek, name='bibliothek'),
-    path('buch/<int:buch_id>/sichtbarkeit/', views.toggle_visibility, name='toggle_visibility'),
-    path('buch/<int:buch_id>/bearbeiten/', views.buch_bearbeiten, name='buch_bearbeiten'),
-    path('bibliothek/suche/', bibliothek_suche, name='bibliothek_suche'),
-    path('buch/<int:pk>/', buch_detail, name='buch_detail'),
-    path('buch/loeschen/<int:book_id>/', views.delete_book, name='delete_book'),
-    path('ausleihen/<int:book_id>/', views.borrow_book, name='borrow_book'),
-    path('borrow/<int:book_id>/', views.borrow_book, name='borrow_book'),
-    path('return/<int:borrowed_id>/', views.return_book, name='return_book'),
+    path('', views.home, name='home'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('book/<int:pk>/', views.book_detail, name='book_detail'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('add-book/', views.add_book, name='add_book'),
+    path('return-book/<int:loan_id>/', views.return_book, name='return_book'),
+    path('pay-invoice/<int:invoice_id>/', views.pay_invoice, name='pay_invoice'),
+    path('datenbank/', views.book_database, name='book_database'),
+    path('buch/bearbeiten/<int:book_id>/', views.edit_book, name='edit_book'),
+    path('ausleihen/', views.all_loans, name='all_loans'),
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
