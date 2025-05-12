@@ -24,7 +24,7 @@ def register(request):
 
     return render(request, 'users/register.html', {
         'form': form,
-        'show_navbar': True,
+        'show_navbar': False,
         'nur_startseite_navbar': True   
     })
 

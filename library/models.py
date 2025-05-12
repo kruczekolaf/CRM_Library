@@ -12,6 +12,7 @@ class Book(models.Model):
     copies_available = models.IntegerField(default = 1)
     visible = models.BooleanField(default=True)
     image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
+        
     
     def __str__(self):
         return self.title
